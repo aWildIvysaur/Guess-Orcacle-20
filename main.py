@@ -6,485 +6,13 @@ import string
 from unidecode import unidecode
 
 ## Definitions
-
 ALPHABET =  string.punctuation + "1234567890" + string.ascii_uppercase
-KEYWORDS = ['Deathtouch',
- 'Defender',
- 'DoubleStrike',
- 'Enchant',
- 'Equip',
- 'FirstStrike',
- 'Flash',
- 'Flying',
- 'Haste',
- 'Hexproof',
- 'Indestructible',
- 'Intimidate',
- 'Landwalk',
- 'Lifelink',
- 'Protection',
- 'Reach',
- 'Shroud',
- 'Trample',
- 'Vigilance',
- 'Ward',
- 'Banding',
- 'Rampage',
- 'CumulativeUpkeep',
- 'Flanking',
- 'Phasing',
- 'Buyback',
- 'Shadow',
- 'Cycling',
- 'Echo',
- 'Horsemanship',
- 'Fading',
- 'Kicker',
- 'Flashback',
- 'Madness',
- 'Fear',
- 'Morph',
- 'Amplify',
- 'Provoke',
- 'Storm',
- 'Affinity',
- 'Entwine',
- 'Modular',
- 'Sunburst',
- 'Bushido',
- 'Soulshift',
- 'Splice',
- 'Offering',
- 'Ninjutsu',
- 'Epic',
- 'Convoke',
- 'Dredge',
- 'Transmute',
- 'Bloodthirst',
- 'Haunt',
- 'Replicate',
- 'Forecast',
- 'Graft',
- 'Recover',
- 'Ripple',
- 'SplitSecond',
- 'Suspend',
- 'Vanishing',
- 'Absorb',
- 'AuraSwap',
- 'Delve',
- 'Fortify',
- 'Frenzy',
- 'Gravestorm',
- 'Poisonous',
- 'Transfigure',
- 'Champion',
- 'Changeling',
- 'Evoke',
- 'Hideaway',
- 'Prowl',
- 'Reinforce',
- 'Conspire',
- 'Persist',
- 'Wither',
- 'Retrace',
- 'Devour',
- 'Exalted',
- 'Unearth',
- 'Cascade',
- 'Annihilator',
- 'LevelUp',
- 'Rebound',
- 'UmbraArmor',
- 'Infect',
- 'BattleCry',
- 'LivingWeapon',
- 'Undying',
- 'Miracle',
- 'Soulbond',
- 'Overload',
- 'Scavenge',
- 'Unleash',
- 'Cipher',
- 'Evolve',
- 'Extort',
- 'Fuse',
- 'Bestow',
- 'Tribute',
- 'Dethrone',
- 'HiddenAgenda',
- 'Outlast',
- 'Prowess',
- 'Dash',
- 'Exploit',
- 'Menace',
- 'Renown',
- 'Awaken',
- 'Devoid',
- 'Ingest',
- 'Myriad',
- 'Surge',
- 'Skulk',
- 'Emerge',
- 'Escalate',
- 'Melee',
- 'Crew',
- 'Fabricate',
- 'Partner',
- 'Undaunted',
- 'Improvise',
- 'Aftermath',
- 'Embalm',
- 'Eternalize',
- 'Afflict',
- 'Ascend',
- 'Assist',
- 'JumpStart',
- 'Mentor',
- 'Afterlife',
- 'Riot',
- 'Spectacle',
- 'Escape',
- 'Companion',
- 'Mutate',
- 'Encore',
- 'Boast',
- 'Foretell',
- 'Demonstrate',
- 'DayboundandNightbound',
- 'Disturb',
- 'Decayed',
- 'Cleave',
- 'Training',
- 'Compleated',
- 'Reconfigure',
- 'Blitz',
- 'Casualty',
- 'Enlist',
- 'ReadAhead',
- 'Ravenous',
- 'Squad',
- 'SpaceSculptor',
- 'Visit',
- 'Prototype',
- 'LivingMetal',
- 'MoreThanMeetstheEye',
- 'ForMirrodin',
- 'Toxic',
- 'Backup',
- 'Bargain',
- 'Craft',
- 'Disguise',
- 'Solved',
- 'Plot',
- 'Saddle',
- 'Spree',
- 'Freerunning',
- 'Gift',
- 'Offspring',
- 'Impending']
-CREATURETYPES = list(['Advisor',
- 'Aetherborn',
- 'Alien',
- 'Ally',
- 'Angel',
- 'Antelope',
- 'Ape',
- 'Archer',
- 'Archon',
- 'Armadillo',
- 'Army',
- 'Artificer',
- 'Assassin',
- 'Assembly-Worker',
- 'Astartes',
- 'Atog',
- 'Aurochs',
- 'Avatar',
- 'Azra',
- 'Badger',
- 'Balloon',
- 'Barbarian',
- 'Bard',
- 'Basilisk',
- 'Bat',
- 'Bear',
- 'Beast',
- 'Beaver',
- 'Beeble',
- 'Beholder',
- 'Berserker',
- 'Bird',
- 'Blinkmoth',
- 'Boar',
- 'Bringer',
- 'Brushwagg',
- 'Camarid',
- 'Camel',
- 'Capybara',
- 'Caribou',
- 'Carrier',
- 'Cat',
- 'Centaur',
- 'Child',
- 'Chimera',
- 'Citizen',
- 'Cleric',
- 'Clown',
- 'Cockatrice',
- 'Construct',
- 'Coward',
- 'Coyote',
- 'Crab',
- 'Crocodile',
- 'C’tan',
- 'Custodes',
- 'Cyberman',
- 'Cyclops',
- 'Dalek',
- 'Dauthi',
- 'Demigod',
- 'Demon',
- 'Deserter',
- 'Detective',
- 'Devil',
- 'Dinosaur',
- 'Djinn',
- 'Doctor',
- 'Dog',
- 'Dragon',
- 'Drake',
- 'Dreadnought',
- 'Drone',
- 'Druid',
- 'Dryad',
- 'Dwarf',
- 'Efreet',
- 'Egg',
- 'Elder',
- 'Eldrazi',
- 'Elemental',
- 'Elephant',
- 'Elf',
- 'Elk',
- 'Employee',
- 'Eye',
- 'Faerie',
- 'Ferret',
- 'Fish',
- 'Flagbearer',
- 'Fox',
- 'Fractal',
- 'Frog',
- 'Fungus',
- 'Gamer',
- 'Gargoyle',
- 'Germ',
- 'Giant',
- 'Gith',
- 'Glimmer',
- 'Gnoll',
- 'Gnome',
- 'Goat',
- 'Goblin',
- 'God',
- 'Golem',
- 'Gorgon',
- 'Graveborn',
- 'Gremlin',
- 'Griffin',
- 'Guest',
- 'Hag',
- 'Halfling',
- 'Hamster',
- 'Harpy',
- 'Hellion',
- 'Hippo',
- 'Hippogriff',
- 'Homarid',
- 'Homunculus',
- 'Horror',
- 'Horse',
- 'Human',
- 'Hydra',
- 'Hyena',
- 'Illusion',
- 'Imp',
- 'Incarnation',
- 'Inkling',
- 'Inquisitor',
- 'Insect',
- 'Jackal',
- 'Jellyfish',
- 'Juggernaut',
- 'Kavu',
- 'Kirin',
- 'Kithkin',
- 'Knight',
- 'Kobold',
- 'Kor',
- 'Kraken',
- 'Llama',
- 'Lamia',
- 'Lammasu',
- 'Leech',
- 'Leviathan',
- 'Lhurgoyf',
- 'Licid',
- 'Lizard',
- 'Manticore',
- 'Masticore',
- 'Mercenary',
- 'Merfolk',
- 'Metathran',
- 'Minion',
- 'Minotaur',
- 'Mite',
- 'Mole',
- 'Monger',
- 'Mongoose',
- 'Monk',
- 'Monkey',
- 'Moonfolk',
- 'Mount',
- 'Mouse',
- 'Mutant',
- 'Myr',
- 'Mystic',
- 'Nautilus',
- 'Necron',
- 'Nephilim',
- 'Nightmare',
- 'Nightstalker',
- 'Ninja',
- 'Noble',
- 'Noggle',
- 'Nomad',
- 'Nymph',
- 'Octopus',
- 'Ogre',
- 'Ooze',
- 'Orb',
- 'Orc',
- 'Orgg',
- 'Otter',
- 'Ouphe',
- 'Ox',
- 'Oyster',
- 'Pangolin',
- 'Peasant',
- 'Pegasus',
- 'Pentavite',
- 'Performer',
- 'Pest',
- 'Phelddagrif',
- 'Phoenix',
- 'Phyrexian',
- 'Pilot',
- 'Pincher',
- 'Pirate',
- 'Plant',
- 'Porcupine',
- 'Possum',
- 'Praetor',
- 'Primarch',
- 'Prism',
- 'Processor',
- 'Rabbit',
- 'Raccoon',
- 'Ranger',
- 'Rat',
- 'Rebel',
- 'Reflection',
- 'Rhino',
- 'Rigger',
- 'Robot',
- 'Rogue',
- 'Sable',
- 'Salamander',
- 'Samurai',
- 'Sand',
- 'Saproling',
- 'Satyr',
- 'Scarecrow',
- 'Scientist',
- 'Scion',
- 'Scorpion',
- 'Scout',
- 'Sculpture',
- 'Serf',
- 'Serpent',
- 'Servo',
- 'Shade',
- 'Shaman',
- 'Shapeshifter',
- 'Shark',
- 'Sheep',
- 'Siren',
- 'Skeleton',
- 'Skunk',
- 'Slith',
- 'Sliver',
- 'Sloth',
- 'Slug',
- 'Snail',
- 'Snake',
- 'Soldier',
- 'Soltari',
- 'Spawn',
- 'Specter',
- 'Spellshaper',
- 'Sphinx',
- 'Spider',
- 'Spike',
- 'Spirit',
- 'Splinter',
- 'Sponge',
- 'Squid',
- 'Squirrel',
- 'Starfish',
- 'Surrakar',
- 'Survivor',
- 'Synth',
- 'Tentacle',
- 'Tetravite',
- 'Thalakos',
- 'Thopter',
- 'Thrull',
- 'Tiefling',
- 'Toy',
- 'Treefolk',
- 'Trilobite',
- 'Triskelavite',
- 'Troll',
- 'Turtle',
- 'Tyranid',
- 'Unicorn',
- 'Vampire',
- 'Varmint',
- 'Vedalken',
- 'Volver',
- 'Wall',
- 'Walrus',
- 'Warlock',
- 'Warrior',
- 'Weasel',
- 'Weird',
- 'Werewolf',
- 'Whale',
- 'Wizard',
- 'Wolf',
- 'Wolverine',
- 'Wombat',
- 'Worm',
- 'Wraith',
- 'Wurm',
- 'Yeti',
- 'Zombie',
- 'Zubera.'])
-TYPES = list(["Artifact", "Creature", "Enchantment", "Instant", "Land", "Planeswalker", "Sorcery", "Battle", "Legendary", "Snow", "Aura", "Equipment", "Vehicle", "Bobblehead", "Contraption", "Curse", "Fortification", "Kindred", "Background", "Saga", "Cartouche", "Case", "Class", "Curse", "Rune",
-                                      "Cave", "Desert", "Gate", "Lair", "Locus", "Mine", "Power-Plant", "Sphere", "Tower", "Urza's", "Adventure", "Arcane", "Chorus", "Lesson", "Omen", "Trap" ])
-
+with open("keywords.json", mode="r", encoding="utf-8") as keywords_file:
+    KEYWORDS = json.load(keywords_file)
+with open("creature-types.json", mode="r", encoding="utf-8") as ctypes_file:
+    CREATURETYPES = json.load(ctypes_file)
+with open("card-types.json", mode="r", encoding="utf-8") as types_file:
+    TYPES = json.load(types_file)
 
 positiveAwnsers = ["yes", "y", "true", "t", "1", "yup"]  
 negativeAwnsers = ["no", "n", "false", "f", "0", "nope"]    
@@ -494,32 +22,26 @@ answerHistory = []
 remainingCards = []
 
 
-CatagoryAwnsers = {  
-
+QuestionAwnsers = {  
     "Is your card a {insert}?":  TYPES + CREATURETYPES,
     "Is your card {insert}?":       ["White", "UBlue", "Black", "Red", "Green"],
     "Does your card have {insert}?":  KEYWORDS,
-    "Is your card legal in {insert}?":   ["Standard", "Pioneer", "Modern", "Vintage", "Commander"]    }
-
-RangeAwnsers = {
+    "Is your card legal in {insert}?":   ["Standard", "Pioneer", "Modern", "Vintage", "Commander"],
+        
     "Is your card's CMC less than {insert}?":         list(range(1, 5)),
     "Is your card's power less than {insert}?":       list(range(1, 13)),
     "Is your card's toughness less than {insert}?":   list(range(1, 13)),
-    "Does the first letter of your card's name come before {insert} in the alphabet? (punctuation and numbers are first alphabetically)":  string.ascii_uppercase,
-    "Is the price of your card less than ${insert}?":  [0.1, 0.5, 1, 3, 5, 10, 15, 20, 30, 50, 100, 200, 500]    }
 
-RangeSpecificAwnsers = {
     "Is your card's CMC {insert}?":         list(range(1, 20)),
     "Is your card's power {insert}?":       list(range(1, 20)),
     "Is your card's toughness {insert}?":   list(range(1, 20)),
-    "Is the first letter of your card's name {insert}?":  ALPHABET    }
+    "Is the first letter of your card's name {insert}?":  ALPHABET,
 
-TrueFalseAwnsers = { # questions that only have a true/false answer (the insert is ignored but a placeholder is needed for formatting consistency)
     "Is your card multicolored?": "tf",
     "Is your card monocolored?": "tf",
     "Is your card colorless?": "tf",
     "Is your card on the reserve list?": "tf",
-    "Is your card a game changer in EDH?": "tf"     }
+    "Is your card a game changer in EDH?": "tf" }
 
 QuestionFuncs = { # lambda functions for each question type, takes card and insert as arguments and returns True/False
     "Is your card a {insert}?": lambda card, insert: insert in card["type_line"],
@@ -530,8 +52,8 @@ QuestionFuncs = { # lambda functions for each question type, takes card and inse
     "Is your card's CMC less than {insert}?":  lambda card, insert: card["cmc"] < insert,   
     "Is your card's power less than {insert}?": lambda card, insert: desymbolize(card["power"]) < int(insert),
     "Is your card's toughness less than {insert}?":  lambda card, insert: desymbolize(card["toughness"]) < int(insert),
-    "Does the first letter of your card's name come before {insert} in the alphabet? (punctuation and numbers are first alphabetically)": lambda card, insert: ALPHABET.index(unidecode(card["name"][0])) < ALPHABET.index(insert),
-    "Is the price of your card less than ${insert}?": lambda card, insert: True if card["prices"]["usd"] == None else float(card["prices"]["usd"]) < insert,
+    #"Does the first letter of your card's name come before {insert} in the alphabet? (punctuation and numbers are first alphabetically)": lambda card, insert: ALPHABET.index(unidecode(card["name"][0])) < ALPHABET.index(insert),
+    #"Is the price of your card less than ${insert}?": lambda card, insert: True if card["prices"]["usd"] == None else float(card["prices"]["usd"]) < insert,
 
     "Is your card's CMC {insert}?":  lambda card, insert: card["cmc"] == insert,   
     "Is your card's power {insert}?":  lambda card, insert: card["power"] == insert,
@@ -555,7 +77,7 @@ def desymbolize(string): # convert non-numeric power/ toughness to numeric for c
     return eval(string) # eval is safe here because we control the input
                         # it will only ever be a number or a simple math expression like "1+0"
 
-def loadData():  # Load data from cache or download fresh data from scryfall api
+def loadScryfallData():  # Load data from cache or download fresh data from scryfall api
     if os.path.isfile("oracle-cards.json"): # if cache file exists
         if os.path.getmtime("oracle-cards.json") > time.time() - 24 * 60 * 60: # if less than 24 hours old
             with open("oracle-cards.json", mode="r", encoding="utf-8") as cache_file:
@@ -613,34 +135,33 @@ def findQuestion(cards): # find the best question to ask to split the remaining 
 
     # go through each card and get a score of how many cards would answer yes to this question
     # it is aiming for a question that splits the remaining cards in half
-    for questionType in [CatagoryAwnsers, RangeAwnsers, RangeSpecificAwnsers, TrueFalseAwnsers]:
-        for question in questionType:
-            for questionInsert in questionType[question]: # Insert is the variable part of the question (ie "Artifact" in "Is your card an Artifact?")
-                score = 0
-                skip = True
-                for card in cards:
-                    
-                    # if card doesnt have power/ toughness, skip questions about power/toughness
-                    if ((question == "Is your card's power less than {insert}?" or
-                            question == "Is your card's toughness less than {insert}?" or
-                            question == "Is your card's power {insert}?" or
-                            question == "Is your card's toughness {insert}?") and
-                            "power" not in card):
-                        break
-                    else:
-                        answer = checkCard(card, question, questionInsert)
-
-                    if answer:
-                        score += 1
-                else: 
-                    skip = False
-                if abs(target - score) < abs(target - bestScore): # if this question is a better split than the best so far
-                    best = [question, questionInsert]
-                    bestScore = score
-                    if bestScore == target: # skip rest of search if perfect question found
-                        return best
-                if skip: # if we didn't hit a break in the inner loop (ie it wasnt an invalid question)
+    for question in QuestionAwnsers:
+        for questionInsert in QuestionAwnsers[question]: # Insert is the variable part of the question (ie "Artifact" in "Is your card an Artifact?")
+            score = 0
+            skip = True
+            for card in cards:
+                
+                # if card doesnt have power/ toughness, skip questions about power/toughness
+                if ((question == "Is your card's power less than {insert}?" or
+                        question == "Is your card's toughness less than {insert}?" or
+                        question == "Is your card's power {insert}?" or
+                        question == "Is your card's toughness {insert}?") and
+                        "power" not in card):
                     break
+                else:
+                    answer = checkCard(card, question, questionInsert)
+
+                if answer:
+                    score += 1
+            else: 
+                skip = False
+            if abs(target - score) < abs(target - bestScore): # if this question is a better split than the best so far
+                best = [question, questionInsert]
+                bestScore = score
+                if bestScore == target: # skip rest of search if perfect question found
+                    return best
+            if skip: # if we didn't hit a break in the inner loop (ie it wasnt an invalid question)
+                break
     if bestScore != 0 and bestScore != len(cards): # if a valid question was found
         return best
     else:
@@ -652,17 +173,14 @@ def filterCards(cards, question, answer): # filter cards based on question and p
              yield card
 
 if __name__ == "__main__":
-    remainingCards = loadData()
+    remainingCards = loadScryfallData()
         
-    while questionsLeft > 0:
-        if len(remainingCards) <= 2 or questionsLeft == 1: # if only 2 or less cards remain, or out of questions
-            print("\n#### Question {} ####".format(21 - questionsLeft))
-            questionsLeft -= 1
-            break
+    while questionsLeft > 1:
+        print("\n#### Question {} ####".format(21 - questionsLeft))
+        questionsLeft -= 1
+        if len(remainingCards): # if only out of questions
+            break # go to final guesses
         else:
-            print("\n#### Question {} ####".format(21 - questionsLeft))
-            questionsLeft -= 1
-            
             toask = findQuestion(remainingCards)
             if toask != False: # if a valid question was found
                 print(toask[0].format(insert = toask[1]))
@@ -680,12 +198,10 @@ if __name__ == "__main__":
 
                 remainingCards = list(filterCards(remainingCards, toask, inp in positiveAwnsers))
                 print("{} cards remaining".format(len(remainingCards)))
-                with open("last-filter.json", mode="w", encoding="utf-8") as cache_file:
-                    json.dump(remainingCards, cache_file, indent=2) 
-
             else: # no valid question found
-                break
+                break # go to final guesses
     
+    # Final guesses
     cardFound = False
     while cardFound == False and questionsLeft > 0:
         if len(remainingCards) == 0:
@@ -708,7 +224,7 @@ if __name__ == "__main__":
             questionsLeft -= 1
 
     if cardFound:
-        print("Yay! I guessed your card in {} questions".format(21 - questionsLeft))
+        print("I guessed your card in {} questions".format(21 - questionsLeft))
         print("Your card was {}".format(remainingCards[-1]["name"]))
 
     elif len(remainingCards) != 0:
@@ -720,4 +236,3 @@ if __name__ == "__main__":
     print("\nQuestion History:")
     for i in range(len(questionHistory)-1):
         print("Q: " + questionHistory[i][0].format(insert=questionHistory[i][1]) + " | A: " + str(answerHistory[i]))
-
