@@ -14,8 +14,8 @@ with open("creature-types.json", mode="r", encoding="utf-8") as ctypes_file:
 with open("card-types.json", mode="r", encoding="utf-8") as types_file:
     TYPES = json.load(types_file)
 
-positiveAwnsers = ["yes", "y", "true", "t", "1", "yup"]  
-negativeAwnsers = ["no", "n", "false", "f", "0", "nope"]    
+positiveAnswers = ["yes", "y", "true", "t", "1", "yup"]  
+negativeAnswers = ["no", "n", "false", "f", "0", "nope"]    
 questionsLeft = 20
 questionHistory = []
 answerHistory = []
@@ -120,7 +120,7 @@ def checkCard(card, question, questionInsert): # check if a card answers a quest
         and "colors" not in card
         and "card_faces" in card):
         # create a amalgamation card with combined colors of all faces
-        amalgamationCard = {"colors": set(card["card_faces"][0]["colors"] + card["card_faces"][1]["colors"])}
+        amalgamationCard = {"colors": list(card["card_faces"][0]["colors"] + card["card_faces"][1]["colors"])}
         return QuestionFuncs[question](amalgamationCard, questionInsert)
         
     # if question isnt an exception above, just ask normally
@@ -140,7 +140,6 @@ def findQuestion(cards): # find the best question to ask to split the remaining 
             score = 0
             skip = True
             for card in cards:
-                
                 # if card doesnt have power/ toughness, skip questions about power/toughness
                 if ((question == "Is your card's power less than {insert}?" or
                         question == "Is your card's toughness less than {insert}?" or
@@ -178,28 +177,24 @@ if __name__ == "__main__":
     while questionsLeft > 1:
         print("\n#### Question {} ####".format(21 - questionsLeft))
         questionsLeft -= 1
-        if len(remainingCards): # if only out of questions
-            break # go to final guesses
-        else:
-            toask = findQuestion(remainingCards)
-            if toask != False: # if a valid question was found
-                print(toask[0].format(insert = toask[1]))
+        toask = findQuestion(remainingCards)
+        if toask != False: # if a valid question was found
+            print(toask[0].format(insert = toask[1]))
+            inp = input(">>> ").lower()
+            while inp not in positiveAnswers + negativeAnswers: # repeat until valid input
+                print(inp + " is not a valid awnser.")
+                print("Please answer yes or no")
                 inp = input(">>> ").lower()
-                while inp not in positiveAwnsers + negativeAwnsers: # repeat until valid input
-                    print(inp + " is not a valid awnser.")
-                    print("Please answer yes or no")
-                    input(">>> ").lower()
-                #Record question and awnser
-                questionHistory.append(toask)
-                if inp in positiveAwnsers:
-                    answerHistory.append(True)
-                else:
-                    answerHistory.append(False)
+            #Record question and awnser
+            questionHistory.append(toask)
+            if inp in positiveAnswers:
+                answerHistory.append(True)
+            else:
+                answerHistory.append(False)
 
-                remainingCards = list(filterCards(remainingCards, toask, inp in positiveAwnsers))
-                print("{} cards remaining".format(len(remainingCards)))
-            else: # no valid question found
-                break # go to final guesses
+            remainingCards = list(filterCards(remainingCards, toask, inp in positiveAnswers))
+            print("{} cards remaining".format(len(remainingCards)))
+
     
     # Final guesses
     cardFound = False
@@ -209,13 +204,13 @@ if __name__ == "__main__":
             break
         print("Is your card {}?".format(remainingCards[-1]["name"]))
         inp = input(">>> ").lower()
-        while inp not in positiveAwnsers + negativeAwnsers: # repeat until valid input
+        while inp not in positiveAnswers + negativeAnswers: # repeat until valid input
             print(inp + " is not a valid awnser.")
             print("Please answer yes or no")
-            input(">>> ").lower()
+            inp = input(">>> ").lower()
         #Record question and awnser
         questionHistory.append(["Is your card called {}?", remainingCards[-1]["name"]])
-        if inp in positiveAwnsers:
+        if inp in positiveAnswers:
             answerHistory.append(True)
             cardFound = True
         else:
